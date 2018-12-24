@@ -1,4 +1,4 @@
-package com.servicontadores.softwaretekWeb.Controllers;
+package com.servicontadores.softwaretekweb.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Controller
-public class FEController {
+public class FECtrl {
 
     @Autowired
     EntityManager entityManager;
@@ -17,8 +17,7 @@ public class FEController {
     @GetMapping("/json")
     @ResponseBody
     public List<Object> getJson(){
-        List<Object> result = entityManager.createNativeQuery("select * from codigoegresos;").getResultList();
-        return result;
+        return  entityManager.createNativeQuery("select * from codigoegresos;").getResultList();
     }
 
 
