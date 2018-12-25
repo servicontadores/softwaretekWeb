@@ -1,4 +1,4 @@
-package com.servicontadores.softwaretekWeb;
+package com.servicontadores.softwaretekweb;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
