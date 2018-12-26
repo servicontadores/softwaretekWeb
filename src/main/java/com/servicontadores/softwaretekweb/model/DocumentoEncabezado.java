@@ -48,55 +48,20 @@ public class DocumentoEncabezado extends Auditable<String>{
     @OneToOne
     private DocumentoEncabezado documentoEncabezadoAnterior;
 
-    @Audited
-    @OneToOne
     private FormaPago formaPago1;
 
-    @Audited
-    @OneToOne
     private int nitFormaPago1Id;
 
-    @Audited
-    @OneToOne
-    private CuentaPUC pucFormaPago1;
-
-    @Audited
-    @OneToOne
     private FormaPago formaPago2;
 
-    @Audited
-    @OneToOne
     private int nitFormaPago2Id;
 
-    @Audited
-    @OneToOne
-    private CuentaPUC pucFormaPago2;
-
-    @Audited
-    @OneToOne
     private FormaPago formaPago3;
 
-
-    @Audited
-    @OneToOne
     private int nitFormaPago3Id;
 
-    @Audited
-    @OneToOne
-    private CuentaPUC pucFormaPago3;
-
-    @Audited
-    @OneToOne
     private FormaPago formaPago4;
 
-
-    @Audited
-    @OneToOne
     private int nitFormaPago4Id;
-
-    @Audited
-    @OneToOne
-    private CuentaPUC pucFormaPago4;
-
 
 }
