@@ -48,18 +48,23 @@ public class DocumentoEncabezado extends Auditable<String>{
     @OneToOne
     private DocumentoEncabezado documentoEncabezadoAnterior;
 
+    @OneToOne
     private FormaPago formaPago1;
+
 
     private int nitFormaPago1Id;
 
+    @OneToOne
     private FormaPago formaPago2;
 
     private int nitFormaPago2Id;
 
+    @OneToOne
     private FormaPago formaPago3;
 
     private int nitFormaPago3Id;
 
+    @OneToOne
     private FormaPago formaPago4;
 
     private int nitFormaPago4Id;
