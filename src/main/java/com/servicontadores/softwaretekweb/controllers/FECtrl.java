@@ -114,21 +114,12 @@ public class FECtrl {
         JSONArray jsonArray = new JSONArray();
         //Encabezado de Comprobante
         JSONObject Comprobante = new JSONObject();
-        Map<String,String> jsonComprobante = new ArrayList<>();
         Comprobante.put("Fecha",Fecha);
-        jsonComprobante.put("Fecha",Fecha);
-        Comprobante = new JSONObject();
         Comprobante.put("Serie",Serie);
-        jsonComprobante.add(1,Comprobante);
-        Comprobante = new JSONObject();
         Comprobante.put("Folio",Folio);
-        jsonComprobante.add(2,Comprobante);
-        Comprobante = new JSONObject();
         Comprobante.put("Moneda",Moneda);
-        jsonComprobante.add(3,Comprobante);
-        Comprobante = new JSONObject();
         Comprobante.put("Observaciones",Observaciones);
-        jsonComprobante.add(4,Comprobante);
+
 
 
         JSONObject Descripcion = new JSONObject();
@@ -218,7 +209,7 @@ public class FECtrl {
         Receptor.put("Descripcion",arrayReceptor);
 
 
-        jsonArray.add(new JSONArray(jsonComprobante));
+        jsonArray.add(Comprobante);
         jsonArray.add(sucursal);
         jsonArray.add(Emisor);
         jsonArray.add(Receptor);
