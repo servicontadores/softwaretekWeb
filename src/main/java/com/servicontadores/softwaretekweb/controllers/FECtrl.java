@@ -1,16 +1,15 @@
 package com.servicontadores.softwaretekweb.controllers;
 
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.CodigoValorDTO;
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.ComprobanteDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.util.calendar.BaseCalendar;
 
 import javax.persistence.EntityManager;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -121,6 +120,23 @@ public class FECtrl {
         Comprobante.put("Observaciones",Observaciones);
 
 
+        // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
+
+        ComprobanteDTO comprobante = new ComprobanteDTO();
+        comprobante.setFecha(Fecha.toString());
+        comprobante.setSerie(Serie);
+        comprobante.setFolio(Folio.toString());
+        comprobante.setMoneda(Moneda);
+
+        List<CodigoValorDTO> listaMetodoPago = new ArrayList<>();
+        CodigoValorDTO metodoPago = new CodigoValorDTO();
+        metodoPago.setCodigo("");
+        metodoPago.setValor("");
+        listaMetodoPago.add(metodoPago);
+
+        comprobante.setMetodoPago(listaMetodoPago);
+
+
 
         JSONObject Descripcion = new JSONObject();
         JSONArray detallesDescripcion = new JSONArray();
@@ -208,8 +224,7 @@ public class FECtrl {
         arrayReceptor.add(detallesReceptor);
         Receptor.put("Descripcion",arrayReceptor);
 
-
-        jsonArray.add(Comprobante);
+        jsonArray.add(comprobante);
         jsonArray.add(sucursal);
         jsonArray.add(Emisor);
         jsonArray.add(Receptor);
