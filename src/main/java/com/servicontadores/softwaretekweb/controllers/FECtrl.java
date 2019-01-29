@@ -1,16 +1,15 @@
 package com.servicontadores.softwaretekweb.controllers;
 
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.CodigoValorDTO;
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.ComprobanteDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.util.calendar.BaseCalendar;
 
 import javax.persistence.EntityManager;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -110,24 +109,125 @@ public class FECtrl {
             telReceptor=(String) record[41];
 
         }
-        Map Objeto= new LinkedHashMap();
-
 
         JSONArray jsonArray = new JSONArray();
         //Encabezado de Comprobante
-
-        Objeto.put("Fecha",Fecha);
-        Objeto.put("Serie",Serie);
-        Objeto.put("Folio",Folio);
-        Objeto.put("Moneda",Moneda);
-        Objeto.put("Observaciones",Observaciones);
-
-        JSONObject Comprobante = new JSONObject(Objeto);
+        JSONObject Comprobante = new JSONObject();
+        Comprobante.put("Fecha",Fecha);
+        Comprobante.put("Serie",Serie);
+        Comprobante.put("Folio",Folio);
+        Comprobante.put("Moneda",Moneda);
+        Comprobante.put("Observaciones",Observaciones);
 
 
+        // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
 
-        jsonArray.add(Comprobante);
+        ComprobanteDTO comprobante = new ComprobanteDTO();
+        comprobante.setFecha(Fecha.toString());
+        comprobante.setSerie(Serie);
+        comprobante.setFolio(Folio.toString());
+        comprobante.setMoneda(Moneda);
 
+        List<CodigoValorDTO> listaMetodoPago = new ArrayList<>();
+        CodigoValorDTO metodoPago = new CodigoValorDTO();
+        metodoPago.setCodigo("");
+        metodoPago.setValor("");
+        listaMetodoPago.add(metodoPago);
+
+        comprobante.setMetodoPago(listaMetodoPago);
+
+
+
+        JSONObject Descripcion = new JSONObject();
+        JSONArray detallesDescripcion = new JSONArray();
+
+        Descripcion.put("Nombre","Fecha Vencimiento");
+        Descripcion.put("Valor",plazo);
+        Descripcion.put("Nombre","Orden Compra Cliente");
+        Descripcion.put("Valor","");
+        Descripcion.put("Nombre","Sucursal Factura");
+        Descripcion.put("Valor",SucursalFactura);
+        Descripcion.put("Nombre","Sucursal Cliente");
+        Descripcion.put("Valor","");
+
+        detallesDescripcion.add(Descripcion);
+        Comprobante.put("Descripcion",detallesDescripcion);
+
+
+        if(CodigoFormaPago==1){
+            codigoFormaPagoDian="10";
+        }
+        JSONObject MetodoPago=new JSONObject();
+        MetodoPago.put("Codigo",codigoFormaPagoDian);
+        MetodoPago.put("Valor",FormaPago);
+        Comprobante.put("MetodoPago",MetodoPago);
+
+
+
+        //Encabezado de Sucursal
+        JSONObject sucursal = new JSONObject();
+        sucursal.put("guid","");
+        sucursal.put("Nombre",nombreSucursal);
+        sucursal.put("TipoJson",null);
+        sucursal.put("Sistema",null);
+        sucursal.put("Direccion",DirSucursal);
+        sucursal.put("Pais",paisSucursal);
+        sucursal.put("Email",emailSucursal);
+        sucursal.put("Department",DtoSucursal);
+        sucursal.put("CitySubdivisionName",citySubSucursal);
+        sucursal.put("CityName",citySucursal);
+
+
+       //Encabezado del Emisor
+       JSONObject Emisor=new JSONObject();
+        Emisor.put("Identificacion",identificacionEmisor);
+        Emisor.put("TipoIdentificacion",tipoIdEmisor);
+        Emisor.put("RazonSocial",razonSocialEmisor);
+        Emisor.put("NombreComercial",nombreComercialEmisor);
+        Emisor.put("Direccion",direccionEmisor);
+        Emisor.put("Pais",paisEmisor);
+        Emisor.put("email",emailEmisor);
+        Emisor.put("Department",departamentoEmisor);
+        Emisor.put("CitySubdivisionName",citySubEmisor);
+        Emisor.put("CityName",cityEmisor);
+
+        JSONObject detallesEmisor=new JSONObject();
+        JSONArray arrayEmisor=new JSONArray();
+
+        detallesEmisor.put("Nombre","Telefono");
+        detallesEmisor.put("Valor",telEmisor);
+        arrayEmisor.add(detallesEmisor);
+        Emisor.put("Descripcion",arrayEmisor);
+
+
+        //Encabezado del Receptor
+        JSONObject Receptor=new JSONObject();
+        Receptor.put("Identificacion",identificacionReceptor);
+        Receptor.put("TipoIdentificacion",tipoIdReceptor);
+        Receptor.put("RazonSocial",razonSocialReceptor);
+        Receptor.put("NombreComercial",nombreComercialReceptor);
+        Receptor.put("Direccion",direccionReceptor);
+        Receptor.put("Pais",paisReceptor);
+        Receptor.put("email",emailReceptor);
+        Receptor.put("Department",departamentoReceptor);
+        Receptor.put("CitySubdivisionName",citySubReceptor);
+        Receptor.put("CityName",cityReceptor);
+
+        JSONObject detallesReceptor=new JSONObject();
+        JSONArray arrayReceptor=new JSONArray();
+
+        detallesReceptor.put("Nombre","Sector Empresarial");
+        detallesReceptor.put("Valor","");
+        detallesReceptor.put("Nombre","Telefono");
+        detallesReceptor.put("Valor",telReceptor);
+
+        arrayReceptor.add(detallesReceptor);
+        Receptor.put("Descripcion",arrayReceptor);
+
+        jsonArray.add(comprobante);
+        jsonArray.add(sucursal);
+        jsonArray.add(Emisor);
+        jsonArray.add(Receptor);
         return jsonArray;
 
 
