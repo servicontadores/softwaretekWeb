@@ -19,7 +19,7 @@ public class ComprobanteDTO {
     private String Referencia;
     private String ConceptoRef;
     private String Observaciones;
-    private String Descripcion;
+    private List<NombreValorDTO> Descripcion;
     private List<CodigoValorDTO> MetodoPago;
 
 }

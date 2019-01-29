@@ -2,6 +2,7 @@ package com.servicontadores.softwaretekweb.controllers;
 
 import com.servicontadores.softwaretekweb.helpers.FE.DTOs.CodigoValorDTO;
 import com.servicontadores.softwaretekweb.helpers.FE.DTOs.ComprobanteDTO;
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.NombreValorDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,11 +114,11 @@ public class FECtrl {
         JSONArray jsonArray = new JSONArray();
         //Encabezado de Comprobante
         JSONObject Comprobante = new JSONObject();
-        Comprobante.put("Fecha",Fecha);
+        /*Comprobante.put("Fecha",Fecha);
         Comprobante.put("Serie",Serie);
         Comprobante.put("Folio",Folio);
         Comprobante.put("Moneda",Moneda);
-        Comprobante.put("Observaciones",Observaciones);
+        Comprobante.put("Observaciones",Observaciones);*/
 
 
         // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
@@ -130,15 +131,35 @@ public class FECtrl {
 
         List<CodigoValorDTO> listaMetodoPago = new ArrayList<>();
         CodigoValorDTO metodoPago = new CodigoValorDTO();
-        metodoPago.setCodigo("");
-        metodoPago.setValor("");
+
+        if(CodigoFormaPago==1){
+            codigoFormaPagoDian="10";
+        }
+
+        metodoPago.setCodigo(codigoFormaPagoDian);
+        metodoPago.setValor(FormaPago);
+
         listaMetodoPago.add(metodoPago);
 
         comprobante.setMetodoPago(listaMetodoPago);
 
 
+        List<NombreValorDTO> listaDescripcionCte=new ArrayList<>();
+        NombreValorDTO descripcion=new NombreValorDTO();
 
-        JSONObject Descripcion = new JSONObject();
+        descripcion.setNombre("Fecha Vencimiento");
+        descripcion.setValor(plazo.toString());
+        descripcion.setNombre("Orden Compra Cliente");
+        descripcion.setValor("");
+        descripcion.setNombre("Sucursal Factura");
+        descripcion.setValor("");
+        descripcion.setNombre("Sucursal Cliente");
+        descripcion.setValor("");
+
+        listaDescripcionCte.add(descripcion);
+        comprobante.setDescripcion(listaDescripcionCte);
+
+        /*JSONObject Descripcion = new JSONObject();
         JSONArray detallesDescripcion = new JSONArray();
 
         Descripcion.put("Nombre","Fecha Vencimiento");
@@ -150,17 +171,7 @@ public class FECtrl {
         Descripcion.put("Nombre","Sucursal Cliente");
         Descripcion.put("Valor","");
 
-        detallesDescripcion.add(Descripcion);
-        Comprobante.put("Descripcion",detallesDescripcion);
-
-
-        if(CodigoFormaPago==1){
-            codigoFormaPagoDian="10";
-        }
-        JSONObject MetodoPago=new JSONObject();
-        MetodoPago.put("Codigo",codigoFormaPagoDian);
-        MetodoPago.put("Valor",FormaPago);
-        Comprobante.put("MetodoPago",MetodoPago);
+        detallesDescripcion.add(Descripcion);*/
 
 
 
