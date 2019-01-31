@@ -3,6 +3,7 @@ package com.servicontadores.softwaretekweb.controllers;
 import com.servicontadores.softwaretekweb.helpers.FE.DTOs.CodigoValorDTO;
 import com.servicontadores.softwaretekweb.helpers.FE.DTOs.ComprobanteDTO;
 import com.servicontadores.softwaretekweb.helpers.FE.DTOs.NombreValorDTO;
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.SucursalDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,14 +115,13 @@ public class FECtrl {
         JSONArray jsonArray = new JSONArray();
         //Encabezado de Comprobante
         JSONObject Comprobante = new JSONObject();
-        /*Comprobante.put("Fecha",Fecha);
-        Comprobante.put("Serie",Serie);
-        Comprobante.put("Folio",Folio);
-        Comprobante.put("Moneda",Moneda);
-        Comprobante.put("Observaciones",Observaciones);*/
+
+
 
 
         // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
+
+        /* Encabezado Comprobante */
 
         ComprobanteDTO comprobante = new ComprobanteDTO();
         comprobante.setFecha(Fecha.toString());
@@ -152,31 +152,17 @@ public class FECtrl {
         descripcion.setNombre("Orden Compra Cliente");
         descripcion.setValor("");
         descripcion.setNombre("Sucursal Factura");
-        descripcion.setValor("");
+        descripcion.setValor(SucursalFactura);
         descripcion.setNombre("Sucursal Cliente");
         descripcion.setValor("");
 
         listaDescripcionCte.add(descripcion);
         comprobante.setDescripcion(listaDescripcionCte);
 
-        /*JSONObject Descripcion = new JSONObject();
-        JSONArray detallesDescripcion = new JSONArray();
 
-        Descripcion.put("Nombre","Fecha Vencimiento");
-        Descripcion.put("Valor",plazo);
-        Descripcion.put("Nombre","Orden Compra Cliente");
-        Descripcion.put("Valor","");
-        Descripcion.put("Nombre","Sucursal Factura");
-        Descripcion.put("Valor",SucursalFactura);
-        Descripcion.put("Nombre","Sucursal Cliente");
-        Descripcion.put("Valor","");
+        /* Encabezado de Sucursal */
 
-        detallesDescripcion.add(Descripcion);*/
-
-
-
-        //Encabezado de Sucursal
-        JSONObject sucursal = new JSONObject();
+        /*JSONObject sucursal = new JSONObject();
         sucursal.put("guid","");
         sucursal.put("Nombre",nombreSucursal);
         sucursal.put("TipoJson",null);
@@ -186,7 +172,20 @@ public class FECtrl {
         sucursal.put("Email",emailSucursal);
         sucursal.put("Department",DtoSucursal);
         sucursal.put("CitySubdivisionName",citySubSucursal);
-        sucursal.put("CityName",citySucursal);
+        sucursal.put("CityName",citySucursal); */
+
+        SucursalDTO Sucursal= new SucursalDTO();
+        Sucursal.setGuid("");
+        Sucursal.setNombre(nombreSucursal);
+        Sucursal.setTipoJson("");
+        Sucursal.setSistema("");
+        Sucursal.setDireccion(DirSucursal);
+        Sucursal.setPais(paisSucursal);
+        Sucursal.setEmail(emailSucursal);
+        Sucursal.setDepartment(DtoSucursal);
+        Sucursal.setCityName(citySucursal);
+        Sucursal.setCitySubdivisionName(citySubSucursal);
+
 
 
        //Encabezado del Emisor
