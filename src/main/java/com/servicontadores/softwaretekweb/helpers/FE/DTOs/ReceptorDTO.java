@@ -1,7 +1,10 @@
 package com.servicontadores.softwaretekweb.helpers.FE.DTOs;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class ReceptorDTO {
     private String identificacion;
     private String tipoIdentificacion;

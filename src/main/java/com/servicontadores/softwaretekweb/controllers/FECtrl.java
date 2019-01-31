@@ -1,9 +1,6 @@
 package com.servicontadores.softwaretekweb.controllers;
 
-import com.servicontadores.softwaretekweb.helpers.FE.DTOs.CodigoValorDTO;
-import com.servicontadores.softwaretekweb.helpers.FE.DTOs.ComprobanteDTO;
-import com.servicontadores.softwaretekweb.helpers.FE.DTOs.NombreValorDTO;
-import com.servicontadores.softwaretekweb.helpers.FE.DTOs.SucursalDTO;
+import com.servicontadores.softwaretekweb.helpers.FE.DTOs.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,20 +126,6 @@ public class FECtrl {
         comprobante.setFolio(Folio.toString());
         comprobante.setMoneda(Moneda);
 
-        List<CodigoValorDTO> listaMetodoPago = new ArrayList<>();
-        CodigoValorDTO metodoPago = new CodigoValorDTO();
-
-        if(CodigoFormaPago==1){
-            codigoFormaPagoDian="10";
-        }
-
-        metodoPago.setCodigo(codigoFormaPagoDian);
-        metodoPago.setValor(FormaPago);
-
-        listaMetodoPago.add(metodoPago);
-
-        comprobante.setMetodoPago(listaMetodoPago);
-
 
         List<NombreValorDTO> listaDescripcionCte=new ArrayList<>();
         NombreValorDTO descripcion=new NombreValorDTO();
@@ -160,19 +143,22 @@ public class FECtrl {
         comprobante.setDescripcion(listaDescripcionCte);
 
 
-        /* Encabezado de Sucursal */
+        List<CodigoValorDTO> listaMetodoPago = new ArrayList<>();
+        CodigoValorDTO metodoPago = new CodigoValorDTO();
 
-        /*JSONObject sucursal = new JSONObject();
-        sucursal.put("guid","");
-        sucursal.put("Nombre",nombreSucursal);
-        sucursal.put("TipoJson",null);
-        sucursal.put("Sistema",null);
-        sucursal.put("Direccion",DirSucursal);
-        sucursal.put("Pais",paisSucursal);
-        sucursal.put("Email",emailSucursal);
-        sucursal.put("Department",DtoSucursal);
-        sucursal.put("CitySubdivisionName",citySubSucursal);
-        sucursal.put("CityName",citySucursal); */
+        if(CodigoFormaPago==1){
+            codigoFormaPagoDian="10";
+        }
+
+        metodoPago.setCodigo(codigoFormaPagoDian);
+        metodoPago.setValor(FormaPago);
+
+        listaMetodoPago.add(metodoPago);
+
+        comprobante.setMetodoPago(listaMetodoPago);
+
+
+        /* Encabezado de Sucursal */
 
         SucursalDTO Sucursal= new SucursalDTO();
         Sucursal.setGuid("");
@@ -188,56 +174,59 @@ public class FECtrl {
 
 
 
-       //Encabezado del Emisor
-       JSONObject Emisor=new JSONObject();
-        Emisor.put("Identificacion",identificacionEmisor);
-        Emisor.put("TipoIdentificacion",tipoIdEmisor);
-        Emisor.put("RazonSocial",razonSocialEmisor);
-        Emisor.put("NombreComercial",nombreComercialEmisor);
-        Emisor.put("Direccion",direccionEmisor);
-        Emisor.put("Pais",paisEmisor);
-        Emisor.put("email",emailEmisor);
-        Emisor.put("Department",departamentoEmisor);
-        Emisor.put("CitySubdivisionName",citySubEmisor);
-        Emisor.put("CityName",cityEmisor);
+       /* Encabezado del Emisor */
 
-        JSONObject detallesEmisor=new JSONObject();
-        JSONArray arrayEmisor=new JSONArray();
+        EmisorDTO emisor=new EmisorDTO();
+        emisor.setIdentificacion(identificacionEmisor);
+        emisor.setTipoIdentificacion(tipoIdEmisor);
+        emisor.setRazonSocial(razonSocialEmisor);
+        emisor.setNombreComercial(nombreComercialEmisor);
+        emisor.setDireccion(direccionEmisor);
+        emisor.setPais(paisEmisor);
+        emisor.setEmail(emailEmisor);
+        emisor.setDepartment(departamentoEmisor);
+        emisor.setCitySubdivisionName(citySubEmisor);
+        emisor.setCityName(cityEmisor);
 
-        detallesEmisor.put("Nombre","Telefono");
-        detallesEmisor.put("Valor",telEmisor);
-        arrayEmisor.add(detallesEmisor);
-        Emisor.put("Descripcion",arrayEmisor);
+        List<NombreValorDTO>listaDescripcionEmisor=new ArrayList<>();
+        NombreValorDTO descripcionEmisor=new NombreValorDTO();
+        descripcionEmisor.setNombre("Telefono");
+        descripcionEmisor.setValor(telEmisor);
+        listaDescripcionEmisor.add(descripcionEmisor);
+        emisor.setDescripcion(listaDescripcionEmisor);
 
 
-        //Encabezado del Receptor
-        JSONObject Receptor=new JSONObject();
-        Receptor.put("Identificacion",identificacionReceptor);
-        Receptor.put("TipoIdentificacion",tipoIdReceptor);
-        Receptor.put("RazonSocial",razonSocialReceptor);
-        Receptor.put("NombreComercial",nombreComercialReceptor);
-        Receptor.put("Direccion",direccionReceptor);
-        Receptor.put("Pais",paisReceptor);
-        Receptor.put("email",emailReceptor);
-        Receptor.put("Department",departamentoReceptor);
-        Receptor.put("CitySubdivisionName",citySubReceptor);
-        Receptor.put("CityName",cityReceptor);
+        /* Encabezado del Receptor */
 
-        JSONObject detallesReceptor=new JSONObject();
-        JSONArray arrayReceptor=new JSONArray();
+        ReceptorDTO receptor=new ReceptorDTO();
+        receptor.setIdentificacion(identificacionReceptor);
+        receptor.setTipoIdentificacion(tipoIdReceptor);
+        receptor.setRazonSocial(razonSocialReceptor);
+        receptor.setNombreComercial(nombreComercialReceptor);
+        receptor.setDireccion(direccionReceptor);
+        receptor.setPais(paisReceptor);
+        receptor.setEmail(emailReceptor);
+        receptor.setDepartment(departamentoReceptor);
+        receptor.setCitySubdivisionName(citySubReceptor);
+        receptor.setCityName(cityReceptor);
 
-        detallesReceptor.put("Nombre","Sector Empresarial");
-        detallesReceptor.put("Valor","");
-        detallesReceptor.put("Nombre","Telefono");
-        detallesReceptor.put("Valor",telReceptor);
+        List<NombreValorDTO>listaDescripcionReceptor=new ArrayList<>();
+        NombreValorDTO descripcionReceptor=new NombreValorDTO();
+        descripcionReceptor.setNombre("Sector Empresarial");
+        descripcionReceptor.setValor("");
+        descripcionReceptor.setNombre("Telefono");
+        descripcionReceptor.setValor(telReceptor);
+        listaDescripcionReceptor.add(descripcionReceptor);
+        receptor.setDescripcion(listaDescripcionReceptor);
 
-        arrayReceptor.add(detallesReceptor);
-        Receptor.put("Descripcion",arrayReceptor);
+        MovimientosDTO movimientos=new MovimientosDTO();
+        movimientos.setComprobante(comprobante);
+        movimientos.setSucursal(Sucursal);
+        movimientos.setEmisor(emisor);
+        movimientos.setReceptor(receptor);
 
-        jsonArray.add(comprobante);
-        jsonArray.add(sucursal);
-        jsonArray.add(Emisor);
-        jsonArray.add(Receptor);
+        jsonArray.add(movimientos);
+
         return jsonArray;
 
 
