@@ -8,4 +8,5 @@ public class MovimientosDTO {
     private SucursalDTO sucursal;
     private EmisorDTO emisor;
     private ReceptorDTO receptor;
+    private DetallesDTO detalles;
 }

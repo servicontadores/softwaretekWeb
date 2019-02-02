@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.math.BigDecimal;
 
 @Controller
 public class FECtrl {
@@ -19,10 +21,12 @@ public class FECtrl {
 
     @GetMapping("/json")
     @ResponseBody
-    public JSONArray getJson(){
+    public MovimientosDTO getJson(){
 
         List<Object[]> results =  entityManager.createNativeQuery("SELECT facturarmovimientodiario.Fecha AS Fecha,conceptosproductos.Prefijo AS Serie,facturarmovimientodiario.NoDocumento AS Folio,'COP' AS Moneda,facturarmovimientodiario.NoFacturaDevolucion AS Referencia,facturarmovimientodiario.Detal AS Observaciones,facturarmovimientodiario.Plazo AS FechaVencimiento,sucursales.NombreSucursal AS SucursalFactura,vendedor.Codigo AS DocumentoVendedor,facturarmovimientodiario.CodigoFormaPago,formaspago.FormaPago,sucursales.NombreSucursal,'' AS TipoJson,'' AS Sistema,sucursales.Direccion AS DireccionSucursal,'COP' AS PaisSucursal,'' AS EmailSucursal,'' AS DepartmentSuc,'' AS CitySubdivisionNameSuc,'' AS CityNameSuc,sucursales.NIT AS IdentificacionEmisor,vistanit.tipodocumento AS TipoIdentificacionEmisor,vistanit.NombreCompleto AS RazonSocialEmisor,vistanit.NombreCompleto AS NombreComercialEmisor,sucursales.Direccion AS DireccionEmisor,'CO' AS PaisEmisor,vistanit.CorreoEMail AS EmailEmisor,'' AS DepartmentEmisor,'' AS CitySubdivisionNameEmisor,'' AS CityNameEmisor,sucursales.Telefono AS TelefonoEmisor,facturarmovimientodiario.NIT AS Identificacion,nit.tipodocumento AS TipoIdentificacion,nit.NombreCompleto AS RazonSocial,nit.NombreCompleto AS NombreComercial,nit.Direccion AS DireccionReceptor,pais.CodigoDIAN AS Pais,nit.CorreoEMail AS Email,departamento.NombreDepartamento AS Department,municipio.NombreMunicipio AS CitySubdivisionName,municipio.NombreMunicipio AS CityName,'' AS SectorEmpresarial,nit.Telefono AS Telefono FROM facturarmovimientodiario INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto INNER JOIN sucursales ON facturarmovimientodiario.CodigoSucursal = sucursales.Codigo INNER JOIN formaspago ON facturarmovimientodiario.CodigoFormaPago = formaspago.Codigo INNER JOIN nit ON facturarmovimientodiario.NIT = nit.Codigo INNER JOIN vendedor ON facturarmovimientodiario.CodigoVendedor = vendedor.CodigoVendedor INNER JOIN municipio ON nit.codigomunicipio = municipio.CodigoMunicipio INNER JOIN pais ON nit.codigopais = pais.CodigoPais INNER JOIN departamento ON nit.codigodepartamento = departamento.CodigoDepartamento AND departamento.CodigoDepartamento = municipio.CodigoDepartamento INNER JOIN vistanit ON sucursales.NIT = vistanit.Codigo WHERE facturarmovimientodiario.NoDocumento = 27;").getResultList();
+        List<Object[]>results2=   entityManager.createNativeQuery("SELECT productos.Descripcion AS Producto,inventariodiario.Cantidad2 AS Cantidad,Round(inventariodiario.PVrBruto2) AS ValorUnitario,Round(inventariodiario.Pbase * inventariodiario.Cantidad2) AS SubTotal,Round(inventariodiario.PVrTotalGen) AS Total, inventariodiario.CodigoProducto AS Codigo,inventariodiario.PIVA,Round(inventariodiario.PVrIVA),Round(inventariodiario.PVrDescuento),facturarmovimientodiario.ReteF AS PorcentajeRTE,facturarmovimientodiario.ReteFuente, facturarmovimientodiario.retei AS PorcentajeReteIva,facturarmovimientodiario.reteiva,facturarmovimientodiario.ReteICA,facturarmovimientodiario.ReteIK AS PorcentajeReteICA,inventariodiario.PImpoConsumo,Round(inventariodiario.VrPImpoConsumo),inventariodiario.Detalle FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN productos ON inventariodiario.CodigoProducto =productos.CODIGO WHERE facturarmovimientodiario.NoDocumento = 27;").getResultList();
 
+        //Variables de Encabezado
         Date Fecha=new Date();
         String Serie="";
         Integer Folio=0;
@@ -62,6 +66,26 @@ public class FECtrl {
         String citySubReceptor="";
         String cityReceptor="";
         String telReceptor="";
+
+        //Variables de subDetalles
+        String producto="";
+        double Cantidad=0;
+        double valorUnitario=0;
+        double subTotal=0;
+        Number total=0;
+        String Codigo="";
+        double pIva=0;
+        double valorIVA=0;
+        double valorDescuento=0;
+        double porcentajeRTE=0;
+        double valorRTE=0;
+        double porcentajeRTIVA=0;
+        double valorRTIVA=0;
+        double porcentajeRTICA=0;
+        double valorRTICA=0;
+        double porcentajeImpC=0;
+        double valorImpC=0;
+        String detalleProducto="";
 
 
         for(Object[] record:results){
@@ -109,12 +133,14 @@ public class FECtrl {
 
         }
 
-        JSONArray jsonArray = new JSONArray();
-        //Encabezado de Comprobante
-        JSONObject Comprobante = new JSONObject();
-
-
-
+        for(Object [] record:results2){
+            producto=(String) record[0];
+            Cantidad=(double) record[1];
+            valorUnitario=(double) record[2];
+            subTotal=(double) record[3];
+            total=(Number) record[4];
+            Codigo=(String) record[5];
+        }
 
         // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
 
@@ -125,7 +151,7 @@ public class FECtrl {
         comprobante.setSerie(Serie);
         comprobante.setFolio(Folio.toString());
         comprobante.setMoneda(Moneda);
-
+        comprobante.setReferencia("cr123");
 
         List<NombreValorDTO> listaDescripcionCte=new ArrayList<>();
         NombreValorDTO descripcion=new NombreValorDTO();
@@ -219,15 +245,28 @@ public class FECtrl {
         listaDescripcionReceptor.add(descripcionReceptor);
         receptor.setDescripcion(listaDescripcionReceptor);
 
+        /* Encabezado subDetalles */
+
+
+        DetallesDTO subDetalles = new DetallesDTO();
+        subDetalles.setNombre(producto);
+        subDetalles.setCantidad(Cantidad);
+        subDetalles.setValorUnitario(valorUnitario);
+        subDetalles.setSubTotal(subTotal);
+        subDetalles.setTotal(total);
+        subDetalles.setCodigo(Codigo);
+
+
+        /* Encebezado del Objeto DTO Global */
+
         MovimientosDTO movimientos=new MovimientosDTO();
         movimientos.setComprobante(comprobante);
         movimientos.setSucursal(Sucursal);
         movimientos.setEmisor(emisor);
         movimientos.setReceptor(receptor);
+        movimientos.setDetalles(subDetalles);
 
-        jsonArray.add(movimientos);
-
-        return jsonArray;
+        return movimientos;
 
 
     }
