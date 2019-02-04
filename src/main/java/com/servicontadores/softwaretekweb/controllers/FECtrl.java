@@ -185,6 +185,7 @@ public class FECtrl {
             codigoFormaPagoDian="10";
         }
 
+
         metodoPago.setCodigo(codigoFormaPagoDian);
         metodoPago.setValor(FormaPago);
 
@@ -249,6 +250,9 @@ public class FECtrl {
         NombreValorDTO descripcionReceptor=new NombreValorDTO();
         descripcionReceptor.setNombre("Sector Empresarial");
         descripcionReceptor.setValor("");
+        listaDescripcionReceptor.add(descripcionReceptor);
+
+        descripcionReceptor=new NombreValorDTO();
         descripcionReceptor.setNombre("Telefono");
         descripcionReceptor.setValor(telReceptor);
         listaDescripcionReceptor.add(descripcionReceptor);
@@ -256,14 +260,18 @@ public class FECtrl {
 
         /* Encabezado subDetalles */
 
+        List<ActivosDTO>listaActivos=new ArrayList<>();
+        ActivosDTO Activos=new ActivosDTO();
 
-        DetallesDTO subDetalles = new DetallesDTO();
-        subDetalles.setNombre(producto);
-        subDetalles.setCantidad(Cantidad);
-        subDetalles.setValorUnitario(valorUnitario);
-        subDetalles.setSubTotal(subTotal);
-        subDetalles.setTotal(total);
-        subDetalles.setCodigo(Codigo);
+        Activos.setNombre(producto);
+        Activos.setCantidad(Cantidad);
+        Activos.setValorUnitario(valorUnitario);
+        Activos.setSubTotal(subTotal);
+        Activos.setTotal(total);
+        Activos.setCodigo(Codigo);
+       listaActivos.add(Activos);
+
+
 
 
         /* Encebezado del Objeto DTO Global */
@@ -273,12 +281,10 @@ public class FECtrl {
         movimientos.setSucursal(Sucursal);
         movimientos.setEmisor(emisor);
         movimientos.setReceptor(receptor);
-        movimientos.setDetalles(subDetalles);
+        movimientos.setDetalles(listaActivos);
         Gson gson = new Gson();
         String jsonStr = gson.toJson(movimientos);
-
         return jsonStr;
-
 
     }
 
