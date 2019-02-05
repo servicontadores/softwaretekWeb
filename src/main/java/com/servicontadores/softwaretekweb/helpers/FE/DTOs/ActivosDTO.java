@@ -13,4 +13,7 @@ public class ActivosDTO {
     private double subTotal;
     private Number total;
     private String Codigo="";
+    private List<ImpuestosDTO>Impuestos;
+    private List<NombreValorDTO>Descripcion;
+
 }
