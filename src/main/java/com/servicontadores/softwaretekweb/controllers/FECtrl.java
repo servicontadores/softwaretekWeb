@@ -8,8 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import javax.persistence.EntityManager;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import java.util.Date;
 
 @Controller
 public class FECtrl {
@@ -153,6 +160,18 @@ public class FECtrl {
 
         }
 
+
+
+        /*** Extraer la fecha de vencimiento ***/
+        Calendar calendario=Calendar.getInstance();
+        calendario.setTime(Fecha);
+        Integer time=Calendar.DAY_OF_MONTH;
+        Integer temp = calendario.get(time);
+        calendario.set(time, temp+plazo);
+        Date fechaVen = calendario.getTime();
+        SimpleDateFormat form=new SimpleDateFormat("yyyy-MM-dd");
+        String Formateado=form.format(fechaVen);
+
         // SE CREA OBJETO DTO Y SE ESTABLECEN SUS VALORES.
 
         /* Encabezado Comprobante */
@@ -171,7 +190,7 @@ public class FECtrl {
         NombreValorDTO descripcion=new NombreValorDTO();
 
         descripcion.setNombre("Fecha Vencimiento");
-        descripcion.setValor(plazo.toString());
+        descripcion.setValor(Formateado);
         listaDescripcionCte.add(descripcion);
 
         descripcion=new NombreValorDTO();
@@ -272,6 +291,7 @@ public class FECtrl {
         listaDescripcionReceptor.add(descripcionReceptor);
         receptor.setDescripcion(listaDescripcionReceptor);
 
+
         /* Encabezado subDetalles */
 
         List<ActivosDTO>listaActivos=new ArrayList<>();
@@ -305,13 +325,13 @@ public class FECtrl {
 
         if(porcentajeImpC !=0) {
 
-        Impuestos.setImpuesto("03");
-        Impuestos.setNombre("VALOR TOTAL DE IMPUESTO AL CONSUMO ");
-        Impuestos.setPorcentaje(porcentajeImpC);
-        Impuestos.setTotalImp(valorImpC);
-        listaImpuestos.add(Impuestos);
-        Activos.setImpuestos(listaImpuestos);
-        Impuestos=new ImpuestosDTO();
+            Impuestos.setImpuesto("03");
+            Impuestos.setNombre("VALOR TOTAL DE IMPUESTO AL CONSUMO ");
+            Impuestos.setPorcentaje(porcentajeImpC);
+            Impuestos.setTotalImp(valorImpC);
+            listaImpuestos.add(Impuestos);
+            Activos.setImpuestos(listaImpuestos);
+            Impuestos=new ImpuestosDTO();
         }
 
         if(porcentajeRTE !=0) {
@@ -359,8 +379,6 @@ public class FECtrl {
         listaDescripcion.add(Descripcion);
 
         Activos.setDescripcion(listaDescripcion);
-
-
         listaActivos.add(Activos);
 
 
