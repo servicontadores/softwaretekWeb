@@ -10,6 +10,7 @@ public class MovimientosDTO {
     private SucursalDTO sucursal;
     private EmisorDTO emisor;
     private ReceptorDTO receptor;
-    //private ActivosDTO detalles;
     private List<ActivosDTO>detalles;
+    private TotalesDTO Totales;
+
 }

@@ -28,8 +28,9 @@ public class FECtrl {
     @ResponseBody
     public String getJson(){
 
-        List<Object[]> results =  entityManager.createNativeQuery("SELECT facturarmovimientodiario.Fecha AS Fecha,conceptosproductos.Prefijo AS Serie,facturarmovimientodiario.NoDocumento AS Folio,'COP' AS Moneda,facturarmovimientodiario.NoFacturaDevolucion AS Referencia,facturarmovimientodiario.Detal AS Observaciones,facturarmovimientodiario.Plazo AS FechaVencimiento,sucursales.NombreSucursal AS SucursalFactura,vendedor.Codigo AS DocumentoVendedor,facturarmovimientodiario.CodigoFormaPago,formaspago.FormaPago,sucursales.NombreSucursal,'' AS TipoJson,'' AS Sistema,sucursales.Direccion AS DireccionSucursal,'COP' AS PaisSucursal,'' AS EmailSucursal,'' AS DepartmentSuc,'' AS CitySubdivisionNameSuc,'' AS CityNameSuc,sucursales.NIT AS IdentificacionEmisor,vistanit.tipodocumento AS TipoIdentificacionEmisor,vistanit.NombreCompleto AS RazonSocialEmisor,vistanit.NombreCompleto AS NombreComercialEmisor,sucursales.Direccion AS DireccionEmisor,'CO' AS PaisEmisor,vistanit.CorreoEMail AS EmailEmisor,'' AS DepartmentEmisor,'' AS CitySubdivisionNameEmisor,'' AS CityNameEmisor,sucursales.Telefono AS TelefonoEmisor,facturarmovimientodiario.NIT AS Identificacion,nit.tipodocumento AS TipoIdentificacion,nit.NombreCompleto AS RazonSocial,nit.NombreCompleto AS NombreComercial,nit.Direccion AS DireccionReceptor,pais.CodigoDIAN AS Pais,nit.CorreoEMail AS Email,departamento.NombreDepartamento AS Department,municipio.NombreMunicipio AS CitySubdivisionName,municipio.NombreMunicipio AS CityName,'' AS SectorEmpresarial,nit.Telefono AS Telefono FROM facturarmovimientodiario INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto INNER JOIN sucursales ON facturarmovimientodiario.CodigoSucursal = sucursales.Codigo INNER JOIN formaspago ON facturarmovimientodiario.CodigoFormaPago = formaspago.Codigo INNER JOIN nit ON facturarmovimientodiario.NIT = nit.Codigo INNER JOIN vendedor ON facturarmovimientodiario.CodigoVendedor = vendedor.CodigoVendedor INNER JOIN municipio ON nit.codigomunicipio = municipio.CodigoMunicipio INNER JOIN pais ON nit.codigopais = pais.CodigoPais INNER JOIN departamento ON nit.codigodepartamento = departamento.CodigoDepartamento AND departamento.CodigoDepartamento = municipio.CodigoDepartamento INNER JOIN vistanit ON sucursales.NIT = vistanit.Codigo WHERE facturarmovimientodiario.NoDocumento = 41;").getResultList();
-        List<Object[]>results2=   entityManager.createNativeQuery("SELECT productos.Descripcion AS Producto,inventariodiario.Cantidad2 AS Cantidad,Round(inventariodiario.PVrBruto2) AS ValorUnitario,Round(inventariodiario.Pbase * inventariodiario.Cantidad2) AS SubTotal,Round(inventariodiario.PVrTotalGen) AS Total,inventariodiario.CodigoProducto AS Codigo,inventariodiario.PIVA,Round(inventariodiario.PVrIVA * inventariodiario.Cantidad2) AS valorIva,Round(inventariodiario.PVrDescuento * inventariodiario.Cantidad2) AS valorDescuento,facturarmovimientodiario.ReteF AS PorcentajeRTE,round(facturarmovimientodiario.ReteFuente * inventariodiario.Cantidad2) AS ReteFuente,facturarmovimientodiario.retei AS PorcentajeReteIva,facturarmovimientodiario.reteiva,facturarmovimientodiario.ReteICA,facturarmovimientodiario.ReteIK AS PorcentajeReteICA,inventariodiario.PImpoConsumo,Round(inventariodiario.VrPImpoConsumo * inventariodiario.Cantidad2) AS VrPImpoConsumo,inventariodiario.Detalle FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN productos ON inventariodiario.CodigoProducto =productos.CODIGO WHERE facturarmovimientodiario.NoDocumento = 41").getResultList();
+        List<Object[]> results =  entityManager.createNativeQuery("SELECT facturarmovimientodiario.Fecha AS Fecha,conceptosproductos.Prefijo AS Serie,facturarmovimientodiario.NoDocumento AS Folio,'COP' AS Moneda,facturarmovimientodiario.NoFacturaDevolucion AS Referencia,facturarmovimientodiario.Detal AS Observaciones,facturarmovimientodiario.Plazo AS FechaVencimiento,sucursales.NombreSucursal AS SucursalFactura,vendedor.Codigo AS DocumentoVendedor,facturarmovimientodiario.CodigoFormaPago,formaspago.FormaPago,sucursales.NombreSucursal,'' AS TipoJson,'' AS Sistema,sucursales.Direccion AS DireccionSucursal,'COP' AS PaisSucursal,'' AS EmailSucursal,'' AS DepartmentSuc,'' AS CitySubdivisionNameSuc,'' AS CityNameSuc,sucursales.NIT AS IdentificacionEmisor,vistanit.tipodocumento AS TipoIdentificacionEmisor,vistanit.NombreCompleto AS RazonSocialEmisor,vistanit.NombreCompleto AS NombreComercialEmisor,sucursales.Direccion AS DireccionEmisor,'CO' AS PaisEmisor,vistanit.CorreoEMail AS EmailEmisor,'' AS DepartmentEmisor,'' AS CitySubdivisionNameEmisor,'' AS CityNameEmisor,sucursales.Telefono AS TelefonoEmisor,facturarmovimientodiario.NIT AS Identificacion,nit.tipodocumento AS TipoIdentificacion,nit.NombreCompleto AS RazonSocial,nit.NombreCompleto AS NombreComercial,nit.Direccion AS DireccionReceptor,pais.CodigoDIAN AS Pais,nit.CorreoEMail AS Email,departamento.NombreDepartamento AS Department,municipio.NombreMunicipio AS CitySubdivisionName,municipio.NombreMunicipio AS CityName,'' AS SectorEmpresarial,nit.Telefono AS Telefono FROM facturarmovimientodiario INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto INNER JOIN sucursales ON facturarmovimientodiario.CodigoSucursal = sucursales.Codigo INNER JOIN formaspago ON facturarmovimientodiario.CodigoFormaPago = formaspago.Codigo INNER JOIN nit ON facturarmovimientodiario.NIT = nit.Codigo INNER JOIN vendedor ON facturarmovimientodiario.CodigoVendedor = vendedor.CodigoVendedor INNER JOIN municipio ON nit.codigomunicipio = municipio.CodigoMunicipio INNER JOIN pais ON nit.codigopais = pais.CodigoPais INNER JOIN departamento ON nit.codigodepartamento = departamento.CodigoDepartamento AND departamento.CodigoDepartamento = municipio.CodigoDepartamento INNER JOIN vistanit ON sucursales.NIT = vistanit.Codigo WHERE facturarmovimientodiario.NoDocumento = 34;").getResultList();
+        List<Object[]>results2=   entityManager.createNativeQuery("SELECT productos.Descripcion AS Producto,inventariodiario.Cantidad2 AS Cantidad,Round(inventariodiario.PVrBruto2) AS ValorUnitario,Round(inventariodiario.Pbase * inventariodiario.Cantidad2) AS SubTotal,Round(inventariodiario.PVrTotalGen) AS Total,inventariodiario.CodigoProducto AS Codigo,inventariodiario.PIVA,Round(inventariodiario.PVrIVA * inventariodiario.Cantidad2) AS valorIva,Round(inventariodiario.PVrDescuento * inventariodiario.Cantidad2) AS valorDescuento,facturarmovimientodiario.ReteF AS PorcentajeRTE,round(facturarmovimientodiario.ReteFuente * inventariodiario.Cantidad2) AS ReteFuente,facturarmovimientodiario.retei AS PorcentajeReteIva,facturarmovimientodiario.reteiva,facturarmovimientodiario.ReteICA AS valorReteICA,facturarmovimientodiario.ReteIK AS PorcentajeReteICA,inventariodiario.PImpoConsumo,Round(inventariodiario.VrPImpoConsumo * inventariodiario.Cantidad2) AS VrPImpoConsumo,inventariodiario.Detalle,facturarmovimientodiario.Total AS granTotal,facturarmovimientodiario.Base AS GranSubTotal,facturarmovimientodiario.IVA AS ivaTotal FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN productos ON inventariodiario.CodigoProducto=productos.CODIGO WHERE facturarmovimientodiario.NoDocumento = 34").getResultList();
+
 
         //Variables de Encabezado
         Date Fecha=new Date();
@@ -91,11 +92,13 @@ public class FECtrl {
         double porcentajeImpC=0;
         double valorImpC=0;
         String detalleProducto="";
+        double granTotal=0;
+        double granSubTotal=0;
+        double ivaTotal=0;
+
 
 
         for(Object[] record:results){
-            //SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
-            //SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             Fecha= (Date) record[0];
             Serie = (String) record[1];
             Folio = (Integer) record[2];
@@ -138,28 +141,131 @@ public class FECtrl {
 
         }
 
-        for(Object [] record:results2){
-            producto=(String) record[0];
-            Cantidad=(double) record[1];
-            valorUnitario=(double) record[2];
-            subTotal=(double) record[3];
-            total=(Number) record[4];
-            Codigo=(String) record[5];
-            pIva=(Double) record[6];
-            valorIVA=(Number) record[7];
-            valorDescuento=(double) record[8];
-            porcentajeRTE=(double) record[9];
-            valorRTE=(double) record[10];
-            porcentajeRTIVA=(double) record[11];
-            valorRTIVA=(double) record[12];
-            porcentajeRTICA=(double) record[13];
-            valorRTICA=(double) record[14];
-            porcentajeImpC=(double) record[15];
-            valorImpC=(double) record[16];
-            detalleProducto=(String) record[17];
+        /* Encabezado subDetalles */
+        List<ActivosDTO>listaActivos=new ArrayList<>();
+        ActivosDTO Activos=new ActivosDTO();
 
-        }
+            for (Object[] record : results2) {
+                producto = (String) record[0];
+                Cantidad = (double) record[1];
+                valorUnitario = (double) record[2];
+                subTotal = (double) record[3];
+                total = (Number) record[4];
+                Codigo = (String) record[5];
+                pIva = (Double) record[6];
+                valorIVA = (Number) record[7];
+                valorDescuento = (double) record[8];
+                porcentajeRTE = (double) record[9];
+                valorRTE = (double) record[10];
+                porcentajeRTIVA = (double) record[11];
+                valorRTIVA = (double) record[12];
+                valorRTICA = (double) record[13];
+                porcentajeRTICA = (double) record[14];
+                porcentajeImpC = (double) record[15];
+                valorImpC = (double) record[16];
+                detalleProducto = (String) record[17];
+                granTotal=(double)record[18];
+                granSubTotal=(double)record[19];
+                ivaTotal=(double)record[20];
 
+
+
+                Activos.setNombre(producto);
+                Activos.setCantidad(Cantidad);
+                Activos.setValorUnitario(valorUnitario);
+                Activos.setSubTotal(subTotal);
+                Activos.setTotal(total);
+                Activos.setCodigo(Codigo);
+
+                List<ImpuestosDTO>listaImpuestos=new ArrayList<>();
+                ImpuestosDTO Impuestos=new ImpuestosDTO();
+
+                List<NombreValorDTO>listaDescripcion=new ArrayList<>();
+                NombreValorDTO Descripcion=new NombreValorDTO();
+
+                if(pIva!=0){
+
+
+                    if (pIva == 19) {
+                        Impuestos.setImpuesto("01");
+                    } else if (pIva == 5) {
+                        Impuestos.setImpuesto("0A");
+                    }
+
+                    Impuestos.setNombre("VALOR TOTAL DE IVA AL " + pIva + "%");
+                    Impuestos.setPorcentaje(pIva);
+                    Impuestos.setTotalImp(valorIVA);
+                    listaImpuestos.add(Impuestos);
+                    Activos.setImpuestos(listaImpuestos);
+                    Impuestos=new ImpuestosDTO();
+
+                }
+
+                if(porcentajeImpC !=0) {
+
+                    Impuestos.setImpuesto("03");
+                    Impuestos.setNombre("VALOR TOTAL DE IMPUESTO AL CONSUMO ");
+                    Impuestos.setPorcentaje(porcentajeImpC);
+                    Impuestos.setTotalImp(valorImpC);
+                    listaImpuestos.add(Impuestos);
+                    Activos.setImpuestos(listaImpuestos);
+                    Impuestos=new ImpuestosDTO();
+                }
+
+               /* if(porcentajeRTE !=0) {
+
+                    Impuestos.setImpuesto("05");
+                    Impuestos.setNombre("RETENCION EN LA FUENTE POR RENTA ");
+                    Impuestos.setPorcentaje(porcentajeRTE);
+                    Impuestos.setTotalImp(valorRTE);
+                    listaImpuestos.add(Impuestos);
+                    Activos.setImpuestos(listaImpuestos);
+                    Impuestos=new ImpuestosDTO();
+                }
+
+                if(porcentajeRTIVA !=0){
+                    Impuestos.setImpuesto("06");
+                    Impuestos.setNombre("RETENCION EN LA FUENTE POR IVA ");
+                    Impuestos.setPorcentaje(porcentajeRTIVA);
+                    Impuestos.setTotalImp(valorRTIVA);
+                    listaImpuestos.add(Impuestos);
+                    Activos.setImpuestos(listaImpuestos);
+                    Impuestos=new ImpuestosDTO();
+                }
+
+                if(porcentajeRTICA !=0){
+                    Impuestos.setImpuesto("07");
+                    Impuestos.setNombre("RETENCION EN LA FUENTE POR ICA ");
+                    Impuestos.setPorcentaje(porcentajeRTICA);
+                    Impuestos.setTotalImp(valorRTICA);
+                    listaImpuestos.add(Impuestos);
+                    Activos.setImpuestos(listaImpuestos);
+                    Impuestos=new ImpuestosDTO();
+                }*/
+
+
+                Descripcion.setNombre("Descuento");
+                Descripcion.setValor((String.valueOf(valorDescuento)));
+                listaDescripcion.add(Descripcion);
+                Descripcion =new NombreValorDTO();
+
+                Descripcion.setNombre("Observaciones");
+
+                if(detalleProducto ==null){
+                    Descripcion.setValor(".");
+                }
+                else {
+                    Descripcion.setValor(detalleProducto);
+                }
+
+
+                listaDescripcion.add(Descripcion);
+                Activos.setDescripcion(listaDescripcion);
+
+                listaActivos.add(Activos);
+                Activos =new ActivosDTO();
+
+            }
 
 
         /*** Extraer la fecha de vencimiento ***/
@@ -292,94 +398,12 @@ public class FECtrl {
         receptor.setDescripcion(listaDescripcionReceptor);
 
 
-        /* Encabezado subDetalles */
+        /*Encabezado de Totales FE */
 
-        List<ActivosDTO>listaActivos=new ArrayList<>();
-        ActivosDTO Activos=new ActivosDTO();
-
-        Activos.setNombre(producto);
-        Activos.setCantidad(Cantidad);
-        Activos.setValorUnitario(valorUnitario);
-        Activos.setSubTotal(subTotal);
-        Activos.setTotal(total);
-        Activos.setCodigo(Codigo);
-
-
-        List<ImpuestosDTO>listaImpuestos=new ArrayList<>();
-        ImpuestosDTO Impuestos=new ImpuestosDTO();
-
-        if(pIva!=0){
-            if (pIva == 19) {
-                Impuestos.setImpuesto("01");
-            } else if (pIva == 5) {
-                Impuestos.setImpuesto("0A");
-            }
-
-            Impuestos.setNombre("VALOR TOTAL DE IVA AL " + pIva + "%");
-            Impuestos.setPorcentaje(pIva);
-            Impuestos.setTotalImp(valorIVA);
-            listaImpuestos.add(Impuestos);
-            Activos.setImpuestos(listaImpuestos);
-            Impuestos=new ImpuestosDTO();
-        }
-
-        if(porcentajeImpC !=0) {
-
-            Impuestos.setImpuesto("03");
-            Impuestos.setNombre("VALOR TOTAL DE IMPUESTO AL CONSUMO ");
-            Impuestos.setPorcentaje(porcentajeImpC);
-            Impuestos.setTotalImp(valorImpC);
-            listaImpuestos.add(Impuestos);
-            Activos.setImpuestos(listaImpuestos);
-            Impuestos=new ImpuestosDTO();
-        }
-
-        if(porcentajeRTE !=0) {
-
-            Impuestos.setImpuesto("05");
-            Impuestos.setNombre("RETENCION EN LA FUENTE POR RENTA ");
-            Impuestos.setPorcentaje(porcentajeRTE);
-            Impuestos.setTotalImp(valorRTE);
-            listaImpuestos.add(Impuestos);
-            Activos.setImpuestos(listaImpuestos);
-            Impuestos=new ImpuestosDTO();
-        }
-
-        if(porcentajeRTIVA !=0){
-            Impuestos.setImpuesto("06");
-            Impuestos.setNombre("RETENCION EN LA FUENTE POR IVA ");
-            Impuestos.setPorcentaje(porcentajeRTIVA);
-            Impuestos.setTotalImp(valorRTIVA);
-            listaImpuestos.add(Impuestos);
-            Activos.setImpuestos(listaImpuestos);
-            Impuestos=new ImpuestosDTO();
-        }
-
-        if(porcentajeRTICA !=0){
-            Impuestos.setImpuesto("07");
-            Impuestos.setNombre("RETENCION EN LA FUENTE POR ICA ");
-            Impuestos.setPorcentaje(porcentajeRTICA);
-            Impuestos.setTotalImp(valorRTICA);
-            listaImpuestos.add(Impuestos);
-            Activos.setImpuestos(listaImpuestos);
-            Impuestos=new ImpuestosDTO();
-        }
-
-
-        List<NombreValorDTO>listaDescripcion=new ArrayList<>();
-        NombreValorDTO Descripcion=new NombreValorDTO();
-
-        Descripcion.setNombre("Descuento");
-        Descripcion.setValor(String.valueOf(valorDescuento));
-        listaDescripcion.add(Descripcion);
-        Descripcion =new NombreValorDTO();
-
-        Descripcion.setNombre("Observaciones");
-        Descripcion.setValor(detalleProducto);
-        listaDescripcion.add(Descripcion);
-
-        Activos.setDescripcion(listaDescripcion);
-        listaActivos.add(Activos);
+        TotalesDTO Totales=new TotalesDTO();
+        Totales.setTotal(granTotal);
+        Totales.setSubTotal(granSubTotal);
+        Totales.setIVA(ivaTotal);
 
 
         /* Encebezado del Objeto DTO Global */
@@ -390,6 +414,8 @@ public class FECtrl {
         movimientos.setEmisor(emisor);
         movimientos.setReceptor(receptor);
         movimientos.setDetalles(listaActivos);
+        movimientos.setTotales(Totales);
+
         Gson gson = new Gson();
         String jsonStr = gson.toJson(movimientos);
         return jsonStr;
