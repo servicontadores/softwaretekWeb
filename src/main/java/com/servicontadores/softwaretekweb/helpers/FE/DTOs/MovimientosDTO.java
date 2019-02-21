@@ -12,5 +12,6 @@ public class MovimientosDTO {
     private ReceptorDTO receptor;
     private List<ActivosDTO>detalles;
     private TotalesDTO Totales;
+    private List<NombreValorDTO> DetallesComprobante;
 
 }
