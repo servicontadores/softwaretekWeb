@@ -28,18 +28,20 @@ public class FECtrl {
     @GetMapping("/json")
     @ResponseBody
     public String getJson() {
-        Integer numFactura=47990;
 
-        List<Object[]> results = entityManager.createNativeQuery("SELECT facturarmovimientodiario.Sys_CreationDate AS Fecha,conceptosproductos.Prefijo AS Serie,facturarmovimientodiario.NoDocumento AS Folio,'COP' AS Moneda,facturarmovimientodiario.NoFacturaDevolucion AS Referencia,facturarmovimientodiario.Detal AS Observaciones,facturarmovimientodiario.Plazo AS FechaVencimiento,sucursales.NombreSucursal AS SucursalFactura,vendedor.Codigo AS DocumentoVendedor,facturarmovimientodiario.CodigoFormaPago,formaspago.FormaPago,sucursales.NombreSucursal,'' AS TipoJson,'' AS Sistema,sucursales.Direccion AS DireccionSucursal,'COP' AS PaisSucursal,'' AS EmailSucursal,'' AS DepartmentSuc,'' AS CitySubdivisionNameSuc,'' AS CityNameSuc,sucursales.NIT AS IdentificacionEmisor,vistanit.tipodocumento AS TipoIdentificacionEmisor,vistanit.NombreCompleto AS RazonSocialEmisor,vistanit.NombreCompleto AS NombreComercialEmisor,sucursales.Direccion AS DireccionEmisor,'CO' AS PaisEmisor,vistanit.CorreoEMail AS EmailEmisor,'' AS DepartmentEmisor,'' AS CitySubdivisionNameEmisor,'' AS CityNameEmisor,sucursales.Telefono AS TelefonoEmisor,facturarmovimientodiario.NIT AS Identificacion,nit.tipodocumento AS TipoIdentificacion,nit.NombreCompleto AS RazonSocial,nit.NombreCompleto AS NombreComercial,nit.Direccion AS DireccionReceptor,pais.CodigoDIAN AS Pais,nit.CorreoEMail AS Email,departamento.NombreDepartamento AS Department,municipio.NombreMunicipio AS CitySubdivisionName,municipio.NombreMunicipio AS CityName,'' AS SectorEmpresarial,nit.Telefono AS Telefono,facturarmovimientodiario.Total,conceptosproductos.TipoMovimiento,conceptosproductos.esSubconcepto,conceptosproductos.IdConceptoPadre FROM facturarmovimientodiario INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto INNER JOIN sucursales ON facturarmovimientodiario.CodigoSucursal = sucursales.Codigo INNER JOIN formaspago ON facturarmovimientodiario.CodigoFormaPago = formaspago.Codigo INNER JOIN nit ON facturarmovimientodiario.NIT = nit.Codigo INNER JOIN vendedor ON facturarmovimientodiario.CodigoVendedor = vendedor.CodigoVendedor INNER JOIN municipio ON nit.codigomunicipio = municipio.CodigoMunicipio INNER JOIN pais ON nit.codigopais = pais.CodigoPais INNER JOIN departamento ON nit.codigodepartamento = departamento.CodigoDepartamento AND departamento.CodigoDepartamento = municipio.CodigoDepartamento INNER JOIN vistanit ON sucursales.NIT = vistanit.Codigo WHERE facturarmovimientodiario.NoDocumento=47991 AND conceptosproductos.FacturacionElectronica = -1 AND facturarmovimientodiario.Estado <> 'ELIMINADO'").getResultList();
-        List<Object[]> results2 = entityManager.createNativeQuery("SELECT productos.Descripcion AS Producto,inventariodiario.Cantidad2 AS Cantidad,Round(inventariodiario.PVrBruto2) AS ValorUnitario,Round(inventariodiario.Pbase * inventariodiario.Cantidad2) AS SubTotal,Round(inventariodiario.PVrTotalGen) AS Total,inventariodiario.CodigoProducto AS Codigo,inventariodiario.PIVA,Round(inventariodiario.PVrIVA * inventariodiario.Cantidad2) AS valorIva,Round(inventariodiario.PVrDescuento * inventariodiario.Cantidad2) AS valorDescuento,inventariodiario.PRetefuente AS PorcentajeRTE,round((inventariodiario.pretefuente/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS ReteFuente,inventariodiario.PReteIVA AS PorcentajeReteIva,round((preteiva/100)*(((inventariodiario.piva/100)*(inventariodiario.pbase*inventariodiario.cantidad2))*inventariodiario.Cantidad2)) AS valorReteIva,round((inventariodiario.preteIca/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS valorReteICA,inventariodiario.PReteICA AS PorcentajeReteICA,inventariodiario.PImpoConsumo,round((inventariodiario.pImpoconsumo/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS VrPImpoConsumo,inventariodiario.Detalle,facturarmovimientodiario.Total AS granTotal,Round(facturarmovimientodiario.Base) AS GranSubTotal,Round(facturarmovimientodiario.IVA) AS ivaTotal,inventariodiario.PReteCREE,round((inventariodiario.preteCREE/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS ValorReteCREE,conceptosproductos.TipoMovimiento FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN productos ON inventariodiario.CodigoProducto = productos.CODIGO INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento =47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 AND facturarmovimientodiario.Estado <> 'ELIMINADO'").getResultList();
-        List<Object[]> impuestosIVA = entityManager.createNativeQuery("SELECT facturarmovimientodiario.NoDocumento,Sum(ROUND(inventariodiario.PIVA/100*(inventariodiario.pbase*inventariodiario.Cantidad2))) AS valorIva,inventariodiario.PIVA AS porcentajeIva FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento = 47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY facturarmovimientodiario.NoDocumento,inventariodiario.PIVA").getResultList();
-        List<Object[]> impuestosImpC = entityManager.createNativeQuery("SELECT inventariodiario.PImpoConsumo,Sum(round((inventariodiario.pImpoconsumo/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorImpoConsumo FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento = 47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PImpoConsumo").getResultList();
-        List<Object[]>impuestosRTE=entityManager.createNativeQuery("SELECT inventariodiario.PRetefuente,Sum(round((inventariodiario.pretefuente/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorRetefuente FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento = 47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PRetefuente").getResultList();
-        List<Object[]>impuestosRteIVA=entityManager.createNativeQuery("SELECT inventariodiario.PReteIVA,Sum(round((preteiva/100)*(((inventariodiario.piva/100)*(inventariodiario.pbase*inventariodiario.cantidad2))*inventariodiario.Cantidad2))) AS valorReteIVA FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento = 47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PReteIVA").getResultList();
-        List<Object[]>impuestosRteICA=entityManager.createNativeQuery("SELECT inventariodiario.PReteICA,Sum(round((inventariodiario.preteIca/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorReteica FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento = 47991 AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PReteICA").getResultList();
+        Integer numFactura=21;
+
+        List<Object[]> results = entityManager.createNativeQuery("SELECT facturarmovimientodiario.Sys_CreationDate AS Fecha,conceptosproductos.Prefijo AS Serie,facturarmovimientodiario.NoDocumento AS Folio,'COP' AS Moneda,facturarmovimientodiario.NoFacturaDevolucion AS Referencia,facturarmovimientodiario.Detal AS Observaciones,facturarmovimientodiario.Plazo AS FechaVencimiento,sucursales.NombreSucursal AS SucursalFactura,vendedor.Codigo AS DocumentoVendedor,facturarmovimientodiario.CodigoFormaPago,formaspago.FormaPago,sucursales.NombreSucursal,'' AS TipoJson,'' AS Sistema,sucursales.Direccion AS DireccionSucursal,'COP' AS PaisSucursal,'' AS EmailSucursal,'' AS DepartmentSuc,'' AS CitySubdivisionNameSuc,'' AS CityNameSuc,sucursales.NIT AS IdentificacionEmisor,vistanit.tipodocumento AS TipoIdentificacionEmisor,vistanit.NombreCompleto AS RazonSocialEmisor,vistanit.NombreCompleto AS NombreComercialEmisor,sucursales.Direccion AS DireccionEmisor,'CO' AS PaisEmisor,vistanit.CorreoEMail AS EmailEmisor,'' AS DepartmentEmisor,'' AS CitySubdivisionNameEmisor,'' AS CityNameEmisor,sucursales.Telefono AS TelefonoEmisor,facturarmovimientodiario.NIT AS Identificacion,nit.tipodocumento AS TipoIdentificacion,nit.NombreCompleto AS RazonSocial,nit.NombreCompleto AS NombreComercial,nit.Direccion AS DireccionReceptor,pais.CodigoDIAN AS Pais,nit.CorreoEMail AS Email,departamento.NombreDepartamento AS Department,municipio.NombreMunicipio AS CitySubdivisionName,municipio.NombreMunicipio AS CityName,'' AS SectorEmpresarial,nit.Telefono AS Telefono,facturarmovimientodiario.Total,conceptosproductos.TipoMovimiento,conceptosproductos.esSubconcepto,conceptosproductos.Grupo,conceptosproductos.AnularFactura FROM facturarmovimientodiario INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto INNER JOIN sucursales ON facturarmovimientodiario.CodigoSucursal = sucursales.Codigo INNER JOIN formaspago ON facturarmovimientodiario.CodigoFormaPago = formaspago.Codigo INNER JOIN nit ON facturarmovimientodiario.NIT = nit.Codigo INNER JOIN vendedor ON facturarmovimientodiario.CodigoVendedor = vendedor.CodigoVendedor INNER JOIN municipio ON nit.codigomunicipio = municipio.CodigoMunicipio INNER JOIN pais ON nit.codigopais = pais.CodigoPais INNER JOIN departamento ON nit.codigodepartamento = departamento.CodigoDepartamento AND departamento.CodigoDepartamento = municipio.CodigoDepartamento INNER JOIN vistanit ON sucursales.NIT = vistanit.Codigo WHERE facturarmovimientodiario.NoDocumento=" +numFactura+" AND conceptosproductos.FacturacionElectronica = -1 AND facturarmovimientodiario.Estado <> 'ELIMINADO'").getResultList();
+        List<Object[]> results2 = entityManager.createNativeQuery("SELECT productos.Descripcion AS Producto,inventariodiario.Cantidad2 AS Cantidad,Round(inventariodiario.PVrBruto2) AS ValorUnitario,Round(inventariodiario.Pbase * inventariodiario.Cantidad2) AS SubTotal,Round(inventariodiario.PVrTotalGen) AS Total,inventariodiario.CodigoProducto AS Codigo,inventariodiario.PIVA,Round(inventariodiario.PVrIVA * inventariodiario.Cantidad2) AS valorIva,Round(inventariodiario.PVrDescuento * inventariodiario.Cantidad2) AS valorDescuento,inventariodiario.PRetefuente AS PorcentajeRTE,round((inventariodiario.pretefuente/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS ReteFuente,inventariodiario.PReteIVA AS PorcentajeReteIva,round((preteiva/100)*(((inventariodiario.piva/100)*(inventariodiario.pbase*inventariodiario.cantidad2))*inventariodiario.Cantidad2)) AS valorReteIva,round((inventariodiario.preteIca/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS valorReteICA,inventariodiario.PReteICA AS PorcentajeReteICA,inventariodiario.PImpoConsumo,round((inventariodiario.pImpoconsumo/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS VrPImpoConsumo,inventariodiario.Detalle,facturarmovimientodiario.Total AS granTotal,Round(facturarmovimientodiario.Base) AS GranSubTotal,Round(facturarmovimientodiario.IVA) AS ivaTotal,inventariodiario.PReteCREE,round((inventariodiario.preteCREE/100)*(inventariodiario.pbase * inventariodiario.Cantidad2)) AS ValorReteCREE,conceptosproductos.TipoMovimiento FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN productos ON inventariodiario.CodigoProducto = productos.CODIGO INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 AND facturarmovimientodiario.Estado <> 'ELIMINADO'").getResultList();
+        List<Object[]> impuestosIVA = entityManager.createNativeQuery("SELECT facturarmovimientodiario.NoDocumento,Sum(ROUND(inventariodiario.PIVA/100*(inventariodiario.pbase*inventariodiario.Cantidad2))) AS valorIva,inventariodiario.PIVA AS porcentajeIva FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND facturarmovimientodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY facturarmovimientodiario.NoDocumento,inventariodiario.PIVA").getResultList();
+        List<Object[]> impuestosImpC = entityManager.createNativeQuery("SELECT inventariodiario.PImpoConsumo,Sum(round((inventariodiario.pImpoconsumo/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorImpoConsumo FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit = inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND facturarmovimientodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PImpoConsumo").getResultList();
+        List<Object[]>impuestosRTE=entityManager.createNativeQuery("SELECT inventariodiario.PRetefuente,Sum(round((inventariodiario.pretefuente/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorRetefuente FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND facturarmovimientodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PRetefuente").getResultList();
+        List<Object[]>impuestosRteIVA=entityManager.createNativeQuery("SELECT inventariodiario.PReteIVA,Sum(round((preteiva/100)*(((inventariodiario.piva/100)*(inventariodiario.pbase*inventariodiario.cantidad2))*inventariodiario.Cantidad2))) AS valorReteIVA FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND facturarmovimientodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PReteIVA").getResultList();
+        List<Object[]>impuestosRteICA=entityManager.createNativeQuery("SELECT inventariodiario.PReteICA,Sum(round((inventariodiario.preteIca/100)*(inventariodiario.pbase * inventariodiario.Cantidad2))) AS valorReteica FROM facturarmovimientodiario INNER JOIN inventariodiario ON facturarmovimientodiario.Regedit =inventariodiario.ImpP INNER JOIN conceptosproductos ON conceptosproductos.Codigo = facturarmovimientodiario.CodigoConcepto WHERE facturarmovimientodiario.NoDocumento ="+numFactura+" AND inventariodiario.Estado <> 'ELIMINADO' AND facturarmovimientodiario.Estado <> 'ELIMINADO' AND conceptosproductos.FacturacionElectronica = -1 GROUP BY inventariodiario.PReteICA").getResultList();
 
         //Variables de Encabezado
-        Date Fecha = new Date();
+        Date FechaVenc = new Date();
+        String Fecha="";
         String Serie = "";
         Integer Folio = 0;
         String Moneda = "COP";
@@ -81,6 +83,11 @@ public class FECtrl {
         String telReceptor = "";
         double totalFactura=0;
         String tipoMovimiento="";
+        Boolean esSubconcepto=false;
+        int grupoConcepto=0;
+        boolean anularFactura=false;
+
+
 
         //Variables de subDetalles
         String producto = "";
@@ -110,7 +117,8 @@ public class FECtrl {
         Number totalImp01 = 0;
 
         for (Object[] record : results) {
-            Fecha = (Date) record[0];
+            FechaVenc = (Date) record[0];
+            Fecha = (String) record[0].toString();
             Serie = (String) record[1];
             Folio = (Integer) record[2];
             Moneda = (String) record[3];
@@ -152,6 +160,9 @@ public class FECtrl {
             telReceptor = (String) record[41];
             totalFactura=(double) record[43];
             tipoMovimiento=(String) record[44];
+            esSubconcepto=(Boolean) record[45];
+            grupoConcepto=(int) record[46];
+            anularFactura=(Boolean) record[47];
 
         }
 
@@ -302,7 +313,7 @@ public class FECtrl {
 
         /*** Extraer la fecha de vencimiento ***/
         Calendar calendario = Calendar.getInstance();
-        calendario.setTime(Fecha);
+        calendario.setTime(FechaVenc);
         Integer time = Calendar.DAY_OF_MONTH;
         Integer temp = calendario.get(time);
         calendario.set(time, temp + plazo);
@@ -321,16 +332,32 @@ public class FECtrl {
         comprobante.setFolio(Folio.toString());
         comprobante.setMoneda(Moneda);
 
-        if(tipoMovimiento.equals("DEVOLUCION")){
+        if(tipoMovimiento.equals("DEVOLUCION") && grupoConcepto==20){
 
             comprobante.setTipoComprobante("04");
             comprobante.setReferencia(Referencia.toString());
             comprobante.setConceptoRef("1");
         }
-        else {comprobante.setTipoComprobante("01");
-              comprobante.setReferencia("");
-              comprobante.setConceptoRef("");
-        }
+            else if(tipoMovimiento.equals("VENTA") && grupoConcepto==20 && anularFactura==true)
+                    {comprobante.setTipoComprobante("04");
+                     comprobante.setReferencia(Referencia.toString());
+                     comprobante.setConceptoRef("2");
+                    }
+                        else if(tipoMovimiento.equals("NOTA CONTABLE CLIENTE")&& grupoConcepto==20)
+                                {comprobante.setTipoComprobante("04");
+                                 comprobante.setReferencia(Referencia.toString());
+                                 comprobante.setConceptoRef("6");}
+
+                                else if(tipoMovimiento.equals("NOTA CONTABLE CLIENTE")&& grupoConcepto==21){
+                                        comprobante.setTipoComprobante("05");
+                                        comprobante.setReferencia(Referencia.toString());
+                                        comprobante.setConceptoRef("3");}
+
+                                        else if(esSubconcepto==false && tipoMovimiento.equals("VENTA"))
+                                                {comprobante.setTipoComprobante("01");
+                                                comprobante.setReferencia("");
+                                                comprobante.setConceptoRef(""); }
+
 
 
         comprobante.setObservaciones("");
